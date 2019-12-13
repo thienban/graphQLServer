@@ -1,4 +1,4 @@
-const graphql  = require('graphql');
+const graphql = require('graphql');
 const axios = require('axios')
 
 
@@ -76,7 +76,7 @@ const mutation = new GraphQLObjectType({
                 companyId: { type: GraphQLString },
             },
             resolve(parentValue, agrs) {
-                return axios.post('http://localhost:3000/users/', { firstName,age })
+                return axios.post('http://localhost:3000/users/', { firstName, age })
                 .then(response => response.data);
             }
         },
@@ -90,6 +90,19 @@ const mutation = new GraphQLObjectType({
                 .then(response => response.data);
             }
         },
+        editUser: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString) },
+                firstName: { type: GraphQLString },
+                age: { type: GraphQLInt},
+                companyId: { type: GraphQLString },
+            },
+            resolve(parentValue, args) {
+                return axios.patch(`http://localhost:3000/users/${args.id}`, args)
+                .then(response => response.data);
+            }
+        }
     }
 });
 
